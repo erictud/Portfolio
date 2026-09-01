@@ -1,0 +1,36 @@
+---
+const { type } = Astro.props;
+---
+
+<style>
+  button {
+    border: none;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .primary_button {
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
+  }
+
+  .secondary_button {
+    background-color: transparent;
+    border: 2px solid var(--accent-color);
+  }
+
+  /* hover effect */
+  button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+</style>
+<button class={`${type == 'primary' ? 'primary_button' : 'secondary_button'}`}>
+  <slot />
+</button>

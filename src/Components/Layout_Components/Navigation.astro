@@ -1,0 +1,29 @@
+---
+import '../../styles/navigation.css';
+
+const pages = [
+  { path: '/', name: 'Home' },
+  { path: '/projects', name: 'Projects' },
+  { path: '/posts', name: 'Blog' },
+];
+const currPath = Astro.url.pathname;
+---
+
+<nav class="navigation">
+  <a href="/" class="nav-logo-dot">
+    Eric Tudorică<span class="dot">.</span>
+  </a>
+  <div class="navigation-menu">
+    {
+      pages.map((page) => {
+        return (
+          <div
+            class={`navigation-menu__item ${currPath == page.path ? 'active' : ''}`}
+          >
+            <a href={`${page.path}`}>{page.name}</a>
+          </div>
+        );
+      })
+    }
+  </div>
+</nav>

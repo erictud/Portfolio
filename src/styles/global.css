@@ -1,0 +1,33 @@
+/* user variables */
+:root {
+  --background-color: #fefefe;
+  --text-color: #121212;
+  --accent-color: #3b82f6;
+  --accent-text-color: #ffffff;
+}
+
+* {
+  /* background-color: var(--background-color); */
+  color: var(--text-color);
+}
+
+/* Add this to the top of your global CSS */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: clip; /* Failsafe to prevent side-scrolling */
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans Variable', sans-serif;
+  font-display: swap;
+}

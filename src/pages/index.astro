@@ -1,17 +1,112 @@
 ---
+// Custom components
+import Layout from '../Layouts/Layout.astro';
+import Button from '../Components/Layout_Components/Button.astro';
+import Paragraph from '../Components/Layout_Components/Paragraph.astro';
+import Heading from '../Components/Layout_Components/Heading.astro';
 
+// Styles
+import '../styles/global.css';
+import '../styles/index.css';
+
+// Logos
+import C_logo from '../../public/c_logo.svg';
+import ASM_logo from '../../public/assembly_logo.svg';
+import Python_logo from '../../public/python_logo.svg';
+import JS_logo from '../../public/js_logo.svg';
+import HTML_logo from '../../public/html_logo.svg';
+import CSS_logo from '../../public/css_logo.svg';
+import Git_logo from '../../public/git_logo.svg';
+import Linux_logo from '../../public/linux_logo.svg';
+import Bash_logo from '../../public/bash_logo.svg';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Eric | Home</title>
+  </head>
+  <Layout>
+    <!-- Hero section -->
+    <section class="hero__section">
+      <img src="hero_section.jpeg" alt="Portrait of me" />
+      <div class="hero__section-content">
+        <h1>Hi, I'm Eric!</h1>
+        <h3>
+          I'm a <span>Computer Engineering student</span> building clean, efficient
+          software and exploring low-level technologies.
+        </h3>
+        <div class="hero__section-btn-row">
+          <Button type="primary">Let's get in touch</Button>
+          <Button type="secondary">See my CV</Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- About me -->
+    <section class="about__section">
+      <div class="about__section-container">
+        <Heading>About Me</Heading>
+        <Paragraph>
+          I'm currently studying Computer Engineering, driven by a curiosity to
+          understand how systems work from the ground up. Whether it's building
+          scalable web applications or tinkering with lower-level architecture,
+          I enjoy bridging the gap between complex problems and elegant,
+          efficient code. When I'm not studying or debugging, you can usually
+          find me exploring new frameworks or working on personal coding
+          projects.
+        </Paragraph>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="skills__section">
+      <div class="skills__section-container">
+        <Heading>Skills & tools</Heading>
+        <div class="skills__category">
+          <div class="skills__list">
+            <div class="skill-tag">
+              <img src={C_logo.src} alt="Logo of the C lang" />
+              <span>C</span>
+            </div>
+            <div class="skill-tag">
+              <img src={ASM_logo.src} alt="Assembly logo" />
+              <span> Assembly x86 </span>
+            </div>
+            <div class="skill-tag">
+              <img src={Python_logo.src} alt="Python logo" />
+              <span>Python</span>
+            </div>
+            <div class="skill-tag">
+              <img src={JS_logo.src} alt="Javascript logo" />
+              <span> JavaScript </span>
+            </div>
+            <div class="skill-tag">
+              <img src={HTML_logo.src} alt="Html logo" />
+              <span>HTML</span>
+            </div>
+            <div class="skill-tag">
+              <img src={CSS_logo.src} alt="CSS logo" />
+              <span>CSS</span>
+            </div>
+            <div class="skill-tag">
+              <img src={Git_logo.src} alt="Git logo" />
+              <span>Git</span>
+            </div>
+            <div class="skill-tag">
+              <img src={Linux_logo.src} alt="Linux logo" />
+              <span>Linux</span>
+            </div>
+            <div class="skill-tag">
+              <img src={Bash_logo.src} alt="Bash logo" />
+              <span>Bash</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </Layout>
 </html>
