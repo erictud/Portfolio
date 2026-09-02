@@ -1,0 +1,122 @@
+---
+// Layout components
+import Heading from '../Components/Layout_Components/Heading.astro';
+import ProjectCard from '../Components/Project_Components/ProjectCard.astro';
+import Layout from '../Layouts/Layout.astro';
+
+// Svg icons
+import C_logo from '../../public/c_logo.svg';
+import Astro_logo from '../../public/astro_logo.svg';
+import Python_logo from '../../public/python_logo.svg';
+import CSS_logo from '../../public/css_logo.svg';
+
+// Styles
+import '../styles/projects.css';
+
+// Projects
+const projects = [
+  {
+    title: 'Image editor',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'low level',
+    gitlink: 'https://github.com/erictud/img_editor_C',
+    technologiesUsed: [
+      {
+        name: 'C',
+        icon: C_logo,
+      },
+    ],
+  },
+  {
+    title: 'Football game predictor',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'other',
+    gitlink: 'https://github.com/erictud/Football-Results-predictor',
+    technologiesUsed: [
+      {
+        name: 'Python',
+        icon: Python_logo,
+      },
+    ],
+  },
+  {
+    title: 'Website for an ecological foundation',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'web',
+    gitlink: 'https://github.com/erictud/FDC-site',
+    technologiesUsed: [
+      {
+        name: 'AstroJS',
+        icon: Astro_logo,
+      },
+      {
+        name: 'CSS',
+        icon: CSS_logo,
+      },
+    ],
+  },
+  {
+    title: 'Emergency number mangement system',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'low level',
+    gitlink: 'https://github.com/erictud/112_managment_system',
+    technologiesUsed: [
+      {
+        name: 'C',
+        icon: C_logo,
+      },
+    ],
+  },
+  {
+    title: 'File indexing system',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'low level',
+    gitlink: 'https://github.com/erictud/basic_file_indexing_system',
+    technologiesUsed: [
+      {
+        name: 'C',
+        icon: C_logo,
+      },
+    ],
+  },
+];
+---
+
+<Layout page_name="Projects">
+  <section class="projects_section">
+    <Heading>My projects</Heading>
+    <div class="projects_section-carousel">
+      <!-- Showing the projects dinamically -->
+      {
+        projects.map((project) => {
+          return (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              category={project.category}
+              gitlink={project.gitlink}
+            >
+              <div class="skills__category">
+                <div class="skills__list">
+                  {project.technologiesUsed.map((tech) => {
+                    return (
+                      <div class="skill-tag">
+                        <img src={tech.icon.src} alt={`Logo of ${tech.name}`} />
+                        <span>{tech.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </ProjectCard>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>

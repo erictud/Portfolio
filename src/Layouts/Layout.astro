@@ -1,11 +1,25 @@
 ---
 import '@fontsource-variable/open-sans';
+import '../styles/global.css';
 import Navigation from '../Components/Layout_Components/Navigation.astro';
+import Footer from '../Components/Layout_Components/Footer.astro';
+
+const { page_name } = Astro.props;
 ---
 
-<body>
-  <Navigation />
-  <main>
-    <slot />
-  </main>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{`Eric | ${page_name}`}</title>
+  </head>
+  <body>
+    <Navigation />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

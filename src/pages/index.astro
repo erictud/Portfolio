@@ -19,94 +19,164 @@ import CSS_logo from '../../public/css_logo.svg';
 import Git_logo from '../../public/git_logo.svg';
 import Linux_logo from '../../public/linux_logo.svg';
 import Bash_logo from '../../public/bash_logo.svg';
+import ProjectCard from '../Components/Project_Components/ProjectCard.astro';
+
+// Skills
+const skills = [
+  {
+    name: 'C',
+    icon: C_logo,
+  },
+  {
+    name: 'Assembly x86',
+    icon: ASM_logo,
+  },
+  {
+    name: 'Python',
+    icon: Python_logo,
+  },
+  {
+    name: 'JavaScript',
+    icon: JS_logo,
+  },
+  {
+    name: 'HTML',
+    icon: HTML_logo,
+  },
+  {
+    name: 'CSS',
+    icon: CSS_logo,
+  },
+  {
+    name: 'Git',
+    icon: Git_logo,
+  },
+  {
+    name: 'Linux',
+    icon: Linux_logo,
+  },
+  {
+    name: 'Bash',
+    icon: Bash_logo,
+  },
+];
+
+// Featured projects
+const projects = [
+  {
+    title: 'Image editor',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'low level',
+    gitlink: 'https://github.com/erictud/img_editor_C',
+    technologiesUsed: [
+      {
+        name: 'C',
+        icon: C_logo,
+      },
+    ],
+  },
+  {
+    title: 'Football game predictor',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.',
+    category: 'other',
+    gitlink: 'https://github.com/erictud/Football-Results-predictor',
+    technologiesUsed: [
+      {
+        name: 'Python',
+        icon: Python_logo,
+      },
+    ],
+  },
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Eric | Home</title>
-  </head>
-  <Layout>
-    <!-- Hero section -->
-    <section class="hero__section">
-      <img src="hero_section.jpeg" alt="Portrait of me" />
-      <div class="hero__section-content">
-        <h1>Hi, I'm Eric!</h1>
-        <h3>
-          I'm a <span>Computer Engineering student</span> building clean, efficient
-          software and exploring low-level technologies.
-        </h3>
-        <div class="hero__section-btn-row">
-          <Button type="primary">Let's get in touch</Button>
-          <Button type="secondary">See my CV</Button>
+<Layout page_name="Home">
+  <!-- Hero section -->
+  <section class="hero__section">
+    <img src="me.jpeg" alt="Portrait of me" />
+    <div class="hero__section-content">
+      <h1>Hi, I'm Eric!</h1>
+      <h3>
+        I'm a <span>Computer Engineering student</span> building clean, efficient
+        software and exploring low-level technologies.
+      </h3>
+      <div class="hero__section-btn-row">
+        <Button type="primary">Let's get in touch</Button>
+        <Button type="secondary">See my CV</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About me -->
+  <section class="about__section">
+    <div class="about__section-container">
+      <Heading>About Me</Heading>
+      <Paragraph>
+        I'm currently studying Computer Engineering, driven by a curiosity to
+        understand how systems work from the ground up. Whether it's building
+        scalable web applications or tinkering with lower-level architecture, I
+        enjoy bridging the gap between complex problems and elegant, efficient
+        code. When I'm not studying or debugging, you can usually find me
+        exploring new frameworks or working on personal coding projects.
+      </Paragraph>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="skills__section">
+    <div class="skills__section-container">
+      <Heading>Skills & tools</Heading>
+      <div class="skills__category">
+        <div class="skills__list">
+          {
+            skills.map((skill) => {
+              return (
+                <div class="skill-tag">
+                  <img src={skill.icon.src} alt={`${skill.name} logo`} />
+                  <span>{skill.name}</span>
+                </div>
+              );
+            })
+          }
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About me -->
-    <section class="about__section">
-      <div class="about__section-container">
-        <Heading>About Me</Heading>
-        <Paragraph>
-          I'm currently studying Computer Engineering, driven by a curiosity to
-          understand how systems work from the ground up. Whether it's building
-          scalable web applications or tinkering with lower-level architecture,
-          I enjoy bridging the gap between complex problems and elegant,
-          efficient code. When I'm not studying or debugging, you can usually
-          find me exploring new frameworks or working on personal coding
-          projects.
-        </Paragraph>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="skills__section">
-      <div class="skills__section-container">
-        <Heading>Skills & tools</Heading>
-        <div class="skills__category">
-          <div class="skills__list">
-            <div class="skill-tag">
-              <img src={C_logo.src} alt="Logo of the C lang" />
-              <span>C</span>
-            </div>
-            <div class="skill-tag">
-              <img src={ASM_logo.src} alt="Assembly logo" />
-              <span> Assembly x86 </span>
-            </div>
-            <div class="skill-tag">
-              <img src={Python_logo.src} alt="Python logo" />
-              <span>Python</span>
-            </div>
-            <div class="skill-tag">
-              <img src={JS_logo.src} alt="Javascript logo" />
-              <span> JavaScript </span>
-            </div>
-            <div class="skill-tag">
-              <img src={HTML_logo.src} alt="Html logo" />
-              <span>HTML</span>
-            </div>
-            <div class="skill-tag">
-              <img src={CSS_logo.src} alt="CSS logo" />
-              <span>CSS</span>
-            </div>
-            <div class="skill-tag">
-              <img src={Git_logo.src} alt="Git logo" />
-              <span>Git</span>
-            </div>
-            <div class="skill-tag">
-              <img src={Linux_logo.src} alt="Linux logo" />
-              <span>Linux</span>
-            </div>
-            <div class="skill-tag">
-              <img src={Bash_logo.src} alt="Bash logo" />
-              <span>Bash</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </Layout>
-</html>
+  <!-- Projects section -->
+  <section class="projects__section">
+    <Heading>Featured projects</Heading>
+    <div class="projects__section-carousel">
+      {
+        projects.map((project) => {
+          return (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              category={project.category}
+              gitlink={project.gitlink}
+            >
+              <div class="skills__category">
+                <div class="skills__list">
+                  {project.technologiesUsed.map((tech) => {
+                    return (
+                      <div class="skill-tag">
+                        <img src={tech.icon.src} alt={`Logo of ${tech.name}`} />
+                        <span>{tech.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </ProjectCard>
+          );
+        })
+      }
+    </div>
+    <div class="projects__section-link">
+      <a href="/projects">See more projects &rarr;</a>
+    </div>
+  </section>
+</Layout>

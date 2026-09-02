@@ -1,0 +1,109 @@
+---
+import Github_logo from '../../../public/github_logo.svg';
+import Gmail_logo from '../../../public/gmail_logo.svg';
+import Linkedin_logo from '../../../public/linkedin_logo.svg';
+
+const currentYear = new Date().getFullYear();
+---
+
+<style>
+  .footer {
+    padding: 2rem 1rem;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .footer h5 {
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .footer_content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .footer_content-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer_content span {
+    color: transparent;
+    border-right: 2px solid #6b7280;
+  }
+
+  .footer_content-media {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer_content-media a img {
+    width: 2.5rem;
+    color: #6b7280;
+  }
+
+  .footer a {
+    color: #6b7280;
+    font-weight: 700;
+    padding: 0 0.5rem;
+    transition: color 0.2s ease;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    color: var(--accent-color);
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .footer_content-media a img {
+      width: 2rem;
+      color: #6b7280;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .footer_content {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .footer_content span {
+      border: none;
+    }
+  }
+</style>
+<footer class="footer">
+  <h5>©{currentYear} Eric Tudorică. All rights reserved.</h5>
+  <div class="footer_content">
+    <div class="footer_content-links">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/blog">Blog</a>
+    </div>
+    <span>l</span>
+    <div class="footer_content-media">
+      <a href="https://github.com/erictud">
+        <img src={Github_logo.src} alt="github logo" />
+      </a>
+      <a href="https://www.linkedin.com/in/eric-tudoric%C4%83-08516020b/">
+        <img src={Linkedin_logo.src} alt="linkedin logo" />
+      </a>
+    </div>
+  </div>
+</footer>

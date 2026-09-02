@@ -6,7 +6,7 @@
   --accent-text-color: #ffffff;
 }
 
-* {
+a {
   /* background-color: var(--background-color); */
   color: var(--text-color);
 }
@@ -30,4 +30,8 @@ body {
   margin: 0;
   font-family: 'Open Sans Variable', sans-serif;
   font-display: swap;
+}
+
+main {
+  min-height: 83vh;
 }
