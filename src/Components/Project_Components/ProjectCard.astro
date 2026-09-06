@@ -53,6 +53,11 @@ const { title, description, category, gitlink } = Astro.props;
     color: #9333ea;
   }
 
+  .other {
+    background-color: #d1fae5;
+    color: #059669;
+  }
+
   .project_card-info a {
     display: flex;
     align-items: center;
@@ -114,7 +119,8 @@ const { title, description, category, gitlink } = Astro.props;
 </style>
 <div class="project_card">
   <div class="project_card-info">
-    <span class={`category ${category == 'low level' ? 'low_level' : 'web'}`}
+    <span
+      class={`category ${category == 'low level' && 'low_level'} ${category}`}
       >{category}</span
     >
     <a href={gitlink}>
