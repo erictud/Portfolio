@@ -1,7 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
+
+import Heading from '../Components/Layout_Components/Heading.astro';
 import Layout from '../Layouts/Layout.astro';
+
+import '../styles/blog.css';
+import BlogPreview from '../Components/Blog_Components/BlogPreview.astro';
+
+// fetching posts
+const blogPosts = await getCollection('blog');
+const currentBlogPosts = blogPosts.filter(
+  (blog) => blog.data.archived == false
+);
+
+console.log(blogPosts);
 ---
 
 <Layout page_name="Blog">
-  <h1>blog</h1>
+  <section class="blog_section">
+    <Heading>Latest posts</Heading>
+    {currentBlogPosts.length == 0 && <p class="empty">No posts yet!</p>}
+    <div class="blog_preview-grid">
+      {
+        currentBlogPosts.map((blog) => {
+          return <BlogPreview data={blog.data} postId={blog.id} />;
+        })
+      }
+    </div>
+  </section>
 </Layout>

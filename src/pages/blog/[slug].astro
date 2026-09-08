@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import '../../styles/blog_page.css';
+import ClockIcon from '../../../public/clock_icon.svg';
+import CalendarIcon from '../../../public/calendar_icon.svg';
+import Layout from '../../Layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const { title, pubDate, readTime } = entry.data;
+---
+
+<Layout page_name=`blog post` footer={false}>
+  <section class="blog_page">
+    <h1>{title}</h1>
+    <div class="blog_page-info">
+      <div class="blog_page-info-container">
+        <img src={CalendarIcon.src} alt="Clock icon" />
+        <h6>{pubDate.toDateString()}</h6>
+      </div>
+      <div class="blog_page-info-container">
+        <img src={ClockIcon.src} alt="Calendar icon" />
+        <h6>{readTime} mins</h6>
+      </div>
+    </div>
+    <Content />
+  </section>
+</Layout>

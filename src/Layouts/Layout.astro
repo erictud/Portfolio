@@ -4,7 +4,7 @@ import '../styles/global.css';
 import Navigation from '../Components/Layout_Components/Navigation.astro';
 import Footer from '../Components/Layout_Components/Footer.astro';
 
-const { page_name } = Astro.props;
+const { page_name, footer = true } = Astro.props;
 ---
 
 <html lang="en">
@@ -20,6 +20,6 @@ const { page_name } = Astro.props;
     <main>
       <slot />
     </main>
-    <Footer />
+    {footer && <Footer />}
   </body>
 </html>

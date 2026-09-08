@@ -176,6 +176,10 @@ section {
   gap: 5rem;
 }
 
+.projects__section-link {
+  padding-top: 2rem;
+}
+
 .projects__section-link a {
   color: var(--accent-color);
   font-weight: 700;
