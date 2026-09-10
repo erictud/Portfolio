@@ -7,5 +7,5 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   integrations: [mdx()],
   site: 'https://erictud.github.io',
-  base: '/',
+  base: '/Portfolio',
 });

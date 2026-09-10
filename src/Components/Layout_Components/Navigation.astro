@@ -1,8 +1,8 @@
 ---
 const pages = [
-  { path: '/', name: 'Home' },
-  { path: '/projects', name: 'Projects' },
-  { path: '/blog', name: 'Blog' },
+  { path: '/Portfolio', name: 'Home' },
+  { path: '/Portfolio/projects', name: 'Projects' },
+  { path: '/Portfolio/blog', name: 'Blog' },
 ];
 const currPath = Astro.url.pathname;
 ---
@@ -105,7 +105,7 @@ const currPath = Astro.url.pathname;
 </style>
 
 <nav class="navigation">
-  <a href="/" class="nav-logo">
+  <a href={pages[0].path} class="nav-logo">
     Eric<span class="dot">.</span>
   </a>
   <div class="navigation-menu">
