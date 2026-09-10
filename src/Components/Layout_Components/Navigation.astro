@@ -1,8 +1,8 @@
 ---
 const pages = [
-  { path: '/Portfolio', name: 'Home' },
-  { path: '/Portfolio/projects', name: 'Projects' },
-  { path: '/Portfolio/blog', name: 'Blog' },
+  { path: '/Portfolio/', name: 'Home' },
+  { path: '/Portfolio/projects/', name: 'Projects' },
+  { path: '/Portfolio/blog/', name: 'Blog' },
 ];
 const currPath = Astro.url.pathname;
 ---
@@ -113,7 +113,7 @@ const currPath = Astro.url.pathname;
       pages.map((page) => {
         return (
           <div
-            class={`navigation-menu__item ${currPath == page.path ? 'active' : ''}`}
+            class={`navigation-menu__item ${currPath == page.path ? 'active' : ''} ${/^\/Portfolio\/blog\/.*/i.test(currPath) && page.path == '/Portfolio/blog/' ? 'active' : ''}`}
           >
             <a href={`${page.path}`}>{page.name}</a>
           </div>
