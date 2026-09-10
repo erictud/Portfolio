@@ -105,10 +105,6 @@ section {
   width: 100%;
 }
 
-.skills__category {
-  margin-bottom: 2.5rem;
-}
-
 .skills__list {
   display: flex;
   flex-wrap: wrap;
@@ -191,4 +187,56 @@ section {
   .projects__section-carousel {
     grid-template-columns: 1fr;
   }
+}
+
+/* Contact section */
+
+/* Contact Section Layout */
+.contact__section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 4rem;
+}
+
+.contact-links {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contact-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background-color: #ffffff;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  transition: all 0.2s ease-in-out;
+}
+
+.contact-pill svg {
+  color: #6b7280;
+  transition: color 0.2s ease-in-out;
+}
+
+.contact-pill:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: #f8fafc;
+}
+
+.contact-pill:hover svg {
+  color: var(--accent-color);
 }

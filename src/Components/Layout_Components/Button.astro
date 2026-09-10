@@ -1,5 +1,5 @@
 ---
-const { type } = Astro.props;
+const { type, className } = Astro.props;
 ---
 
 <style>
@@ -31,6 +31,8 @@ const { type } = Astro.props;
     transform: translateY(-2px);
   }
 </style>
-<button class={`${type == 'primary' ? 'primary_button' : 'secondary_button'}`}>
+<button
+  class={`${type == 'primary' ? 'primary_button' : 'secondary_button'} ${className}`}
+>
   <slot />
 </button>

@@ -33,14 +33,14 @@ const { title, description, readTime, pubDate } = data;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-
+  /* 
   .post_preview-info-row h5:last-child {
     color: #3b82f6;
     background-color: #eff6ff;
     padding: 0.2rem 0.6rem;
     border-radius: 9999px;
     font-weight: 600;
-  }
+  } */
   .post_preview p {
     color: #4b5563;
     line-height: 1.6;
@@ -72,7 +72,8 @@ const { title, description, readTime, pubDate } = data;
     <h3>{title}</h3>
     <div class="post_preview-info-row">
       <h5>{pubDate.toDateString()}</h5>
-      <h5>{readTime} minutes</h5>
+      <h5></h5>
+      <!-- <h5>{readTime} minutes</h5> -->
     </div>
     <p>{description}</p>
     <span class="read-more">Read article &rarr;</span>

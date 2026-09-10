@@ -1,6 +1,4 @@
 ---
-import '../../styles/navigation.css';
-
 const pages = [
   { path: '/', name: 'Home' },
   { path: '/projects', name: 'Projects' },
@@ -9,9 +7,106 @@ const pages = [
 const currPath = Astro.url.pathname;
 ---
 
+<style>
+  .navigation {
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e4e4e7;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    background-color: rgba(254, 254, 254, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    text-decoration: none;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: -0.5px;
+  }
+
+  .dot {
+    color: var(--accent-color);
+    font-size: 2rem;
+  }
+
+  .navigation-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  .navigation-menu__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .navigation-menu__item a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .navigation-menu__item:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in;
+  }
+
+  .active {
+    padding-bottom: 0.3rem;
+    border-bottom: 0.15rem solid var(--accent-color);
+  }
+
+  @media (max-width: 768px) {
+    .navigation-menu {
+      gap: 1rem;
+    }
+
+    .navigation-menu__item a {
+      font-size: 0.9rem;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-color);
+      letter-spacing: -0.5px;
+    }
+  }
+
+  @media (max-width: 468px) {
+    .navigation-menu {
+      gap: 0.4rem;
+    }
+
+    .navigation-menu__item a {
+      font-size: 0.9rem;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-color);
+      letter-spacing: -0.5px;
+    }
+  }
+</style>
+
 <nav class="navigation">
-  <a href="/" class="nav-logo-dot">
-    Eric Tudorică<span class="dot">.</span>
+  <a href="/" class="nav-logo">
+    Eric<span class="dot">.</span>
   </a>
   <div class="navigation-menu">
     {

@@ -1,5 +1,6 @@
 ---
 // Custom components
+import ProjectCard from '../Components/Project_Components/ProjectCard.astro';
 import Layout from '../Layouts/Layout.astro';
 import Button from '../Components/Layout_Components/Button.astro';
 import Paragraph from '../Components/Layout_Components/Paragraph.astro';
@@ -19,7 +20,7 @@ import CSS_logo from '../../public/css_logo.svg';
 import Git_logo from '../../public/git_logo.svg';
 import Linux_logo from '../../public/linux_logo.svg';
 import Bash_logo from '../../public/bash_logo.svg';
-import ProjectCard from '../Components/Project_Components/ProjectCard.astro';
+import Cisco_logo from '../../public/cisco_logo.svg';
 
 // Skills
 const skills = [
@@ -59,6 +60,10 @@ const skills = [
     name: 'Bash',
     icon: Bash_logo,
   },
+  {
+    name: 'CCNA 1',
+    icon: Cisco_logo,
+  },
 ];
 
 // Featured projects
@@ -97,19 +102,25 @@ const projects = [
   <section class="hero__section">
     <img src="me.jpeg" alt="Portrait of me" />
     <div class="hero__section-content">
-      <h1>Hi, I'm Eric!</h1>
+      <h1>Hi, I'm Eric Tudorică!</h1>
       <h3>
         I'm a <span>Computer Engineering student</span> building clean, efficient
         software and exploring low-level technologies.
       </h3>
       <div class="hero__section-btn-row">
-        <Button type="primary">Let's get in touch</Button>
-        <Button type="secondary">See my CV</Button>
+        <Button type="primary" className="contact_btn"
+          >Let's get in touch</Button
+        >
+        <Button type="secondary">
+          <a href="../../public/CV_Tudorica_Eric.pdf" target="_blank">
+            See my CV</a
+          >
+        </Button>
       </div>
     </div>
   </section>
 
-  <!-- About me -->
+  <!-- About me section -->
   <section class="about__section">
     <div class="about__section-container">
       <Heading>About Me</Heading>
@@ -124,7 +135,7 @@ const projects = [
     </div>
   </section>
 
-  <!-- Skills -->
+  <!-- Skills section -->
   <section class="skills__section">
     <div class="skills__section-container">
       <Heading>Skills & tools</Heading>
@@ -179,4 +190,99 @@ const projects = [
       <a href="/projects">See more projects &rarr;</a>
     </div>
   </section>
+
+  <!-- Contact me section -->
+  <section class="contact__section">
+    <Heading class="contact-heading">Get in touch</Heading>
+    <Paragraph class="contact-subtext">
+      I'm currently open to new opportunities. Whether you have a question or
+      just want to say hi, feel free to reach out!
+    </Paragraph>
+
+    <div class="contact-links">
+      <!-- Email Link -->
+      <a href="mailto:your.email@example.com" class="contact-pill">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+          ></path><polyline points="22,6 12,13 2,6"></polyline></svg
+        >
+        email@example.com
+      </a>
+
+      <!-- LinkedIn Link -->
+      <a
+        href="https://www.linkedin.com/in/eric-tudoric%C4%83-08516020b/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-pill"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path
+            d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+          ></path><rect x="2" y="9" width="4" height="12"></rect><circle
+            cx="4"
+            cy="4"
+            r="2"></circle></svg
+        >
+        LinkedIn
+      </a>
+
+      <!-- GitHub Link -->
+      <a
+        href="https://github.com/erictud"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-pill"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+          ></path></svg
+        >
+        GitHub
+      </a>
+    </div>
+  </section>
 </Layout>
+
+<!-- Script for scrolling to the contact section -->
+<script>
+  // Scroll to contact section
+  const contactBtn = document.querySelector('.contact_btn');
+  const contactSection = document.querySelector('.contact__section');
+
+  const contactCoords =
+    (contactSection?.getBoundingClientRect().bottom ?? 0) + window.scrollY; // getting contact section coords
+
+  contactBtn?.addEventListener('click', () => {
+    window.scrollTo({
+      top: contactCoords,
+      behavior: 'smooth',
+    });
+  });
+</script>
