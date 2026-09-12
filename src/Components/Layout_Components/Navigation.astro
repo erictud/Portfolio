@@ -113,7 +113,7 @@ const currPath = Astro.url.pathname;
       pages.map((page) => {
         return (
           <div
-            class={`navigation-menu__item ${currPath == page.path ? 'active' : ''} ${/^\/\/blog\/.*/i.test(currPath) && page.path == '//blog/' ? 'active' : ''}`}
+            class={`navigation-menu__item ${currPath == page.path ? 'active' : ''} ${/^\/\/blog\/.*/i.test(currPath) && page.path == '/blog/' ? 'active' : ''}`}
           >
             <a href={`${page.path}`}>{page.name}</a>
           </div>
