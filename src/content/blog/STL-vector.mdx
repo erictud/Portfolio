@@ -1,0 +1,111 @@
+---
+title: 'Vector class in STL'
+description: 'Guide that includes everything you need to know about STL vector in C++'
+readTime: 10
+pubDate: 2026-09-13
+---
+
+### What is a vector
+
+A vector in C++ is a dynamic sequence container implemented by the STL.
+This means that it is a data structure that stores a collection of
+elements (of the same type) in a linear order and automatically manages its own memory.
+
+### Advantages
+
+    - [x] vectors can dynamically shrink or grow during the execution without the need to manually manage memory
+    - [x] provide efficent insertion and deletion at the end
+
+### Efficency
+
+    - random access - O(1)
+    - insertion/removal at the end - O(1)
+    - insertion/removal elsewhere - O(n)
+
+## Usage & methods
+
+### Declaration
+
+```cpp
+vector<element_type> vector_name;
+vector <vector <element_type>> vector_name; // 2D arrays
+```
+
+### Initialization
+
+```cpp
+vector<int> v = {10, 20, 30};
+vector <char> c = {'a', 'b'};
+vector <long> d(5, 10); // creates a vector of 5 elements all set to 10
+```
+
+### Insert
+
+There are two insert methods, depending where you want to insert the element:
+- **push_back(val)** - inserts element at the end
+- **insert(iterator, val)** - inserts element at the given iterator position
+
+```cpp
+vector <int> v = {1, 2, 3};
+v.push_back(4);
+v.insert(v.begin(), 0);
+```
+
+the output is:
+
+```
+0 1 2 3 4
+```
+
+### Access elements & updating elements
+
+Can be accessed using the **[]** operator or the **.at()** method. The advantage of the latter
+is the **bounds checking** (throws std::out_of_range if the index is invalid). 
+
+We update elements using the index and the assignment operator (=).
+
+### Deleting elements
+
+It depends on the postion that we want to delete:
+
+- **erase(iterator)** - it erases the element at position of the iterator in O(n) time 
+- **pop_back()** - removes the last element in O(1) time
+
+```cpp
+vector<int> a = {1, 2, 3, 4};
+
+v.pop_back(); // we delete 4
+v.erase(find(v.begin(), v.end(), 1)); // we delete 1
+```
+
+### Traversing vector
+
+We can visit every element of a vector in multiple ways using an index based loop, range based loop
+or using iterators. Let's explore every way below:
+
+```cpp
+// index based loops - for
+for(int i = 0; i < vec.size(); i++)
+    // vec[i] is the current element
+
+// range based loops
+for(int x : vec)
+    // x is every element
+
+// iterators
+for(auto it = vec.begin(); it != vec.end(); ++it)
+    // *it is the current val of the element
+    // best for generic use
+
+```
+
+### Useful methods
+    - **vec.begin()** - returns an *iterator* pointing to the first element
+    - **vec.end()** - returns an *iterator* to the past the end element (a theoretical
+    position after the end of the vector; does not contain valid data)
+    - **vec.size()** - returns the size of the vector
+    - **vec.capacity()** - returns the number of elements the vector can hold before reallocation
+    - **vec.empty()** - whether or not the vector is empty
+    - **vec.reserve(n)** - pre-allocates memory for n elements
+    - **vec.clear()** - empties the entire vector. The size will be 0
+    - **vec.shrink_to_fit()** - requests the container to release unused memory. vec.size() == vec.capacity() after the operation
