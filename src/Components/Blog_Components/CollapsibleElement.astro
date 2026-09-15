@@ -1,0 +1,26 @@
+---
+const { summary } = Astro.props;
+---
+
+<details>
+  <summary>{summary}</summary>
+  <slot />
+</details>
+
+<style>
+  /* Schimbă culoarea titlului și elimină săgeata nativă (opțional) */
+  summary {
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+  }
+
+  /* Pentru a schimba sau ascunde săgeata nativă */
+  summary::marker {
+    color: var(--accent-color); /* Săgeată albastră */
+  }
+</style>

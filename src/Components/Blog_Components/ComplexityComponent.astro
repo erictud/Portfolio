@@ -1,0 +1,73 @@
+---
+interface Props {
+  title?: string;
+  operations: {
+    name: string;
+    complexity: string;
+  }[];
+}
+
+const { title = 'Time Complexity', operations } = Astro.props;
+---
+
+<div class="complexity-container">
+  <h3>{title}</h3>
+  <div class="complexity-grid">
+    {
+      operations.map((op) => (
+        <div class="complexity-card">
+          <span class="op-name">{op.name}</span>
+          <span class="op-badge">{op.complexity}</span>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .complexity-container {
+    margin: 32px 0;
+    font-family: sans-serif;
+  }
+
+  h3 {
+    color: #0d2235; /* Matches the dark heading color in your blog */
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+  }
+
+  .complexity-grid {
+    display: grid;
+    /* Creates a responsive 2-column grid that drops to 1 column on small screens */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .complexity-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-left: 5px solid #3b82f6; /* Accent color border */
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+
+  .op-name {
+    font-weight: 500;
+    color: #333;
+    font-size: 1rem;
+  }
+
+  .op-badge {
+    background-color: #eff6ff; /* Very light blue background */
+    color: #3b82f6; /* Accent color for the text */
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 6px 12px;
+    border-radius: 9999px; /* Creates the pill shape */
+  }
+</style>
