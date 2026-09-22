@@ -190,4 +190,78 @@ ListNode *delete_node(ListNode *head, void *ref_data, int (*cmp)(void *, void *)
 ```
 </CollapsibleElement>
 
-## Linked lists in C++
+## Linked list in C++
+
+It is implemented as a double linked list, maintaining both front and back for fast operations. It is included in the
+``` <list> ``` library.
+
+### Declaration and Initialization
+
+The declaration syntax is the following:
+```cpp
+list<type> name_of_list
+
+// ex:
+list<int> my_list = {5, 6, 7};
+list<char> name = {'e', 'r', 'i', 'c'};
+```
+
+### Accessing elements and Traversing list
+
+Since list nodes are scattered in diffrent memory locations, we don't have random access to them. We can access elements in the
+list by traversing it. 
+
+To access the first and last element we use the **front()** and **back()** methods.
+
+```cpp
+list<int> l = {1, 2, 3};
+
+cout << l.front() << l.back();
+cout << *next(l.begin(), 2); // moves the iterator 2 positions and returns the new iterator
+
+// traversing
+for(auto it = l.begin(); it != l.end(); ++it)
+    // it is an iterator to the current element
+```
+
+
+### Inserting, Updating and Deleting elements
+We insert elements using the **insert()** method who inserts a value after the given iterator.
+To add a new element to the front & back of the list we use **push_back()** and **push_front()** methods.
+
+We update an element using the assignment operator by using the * operator on the iterator. We need to reach the element
+by traversing the list since we dont have random access.
+
+
+In order to delete an element we use the **erase()** method with an iterator, and in order to quickly delete first/last
+element we use **pop_front()** and **pop_back()**. To remove a certain value we use **remove()** method with the certain value.
+Also we can delete based on a condition function using **remove_if()**.
+
+```cpp
+list<char> l = {'e', 'r', 'i', 'c'};
+
+auto it = l.begin();
+++it;
+*it = 'm'; // list is e m i c 
+l.insert(it, 'o'); // e m o i c
+
+advance(it, 1);
+l.erase(it); // list is e m o c 
+l.pop_front(); // list is m o c 
+
+// same thing
+l.remove('o');
+l.remove_if([](char c) { return c == 'o'; });
+```
+
+### Other useful methods
+
+    - **list.size()** - return the number of elements
+    - **list.empty()** - checks if the list is void
+    - **list.rbegin()** - returns a reverse iterator pointing to the last element
+    - **list.rend()** - retruns a reverse iterator pointing to the element before the first
+    - **list.clear()** - removes all elements
+    - **list.sort()** - sorts list
+    - **list.unique()** - removes consecutive duplicated
+    - **list.reverse()** - reverses list
+    - **list.splice(iterator l1, list l2)** - relinks pointer by uniting list l2 to list l1
