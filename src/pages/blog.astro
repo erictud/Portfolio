@@ -9,9 +9,9 @@ import BlogPreview from '../Components/Blog_Components/BlogPreview.astro';
 
 // fetching posts
 const blogPosts = await getCollection('blog');
-const currentBlogPosts = blogPosts.filter(
-  (blog) => blog.data.archived == false
-);
+const currentBlogPosts = blogPosts
+  .filter((blog) => blog.data.archived == false)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 console.log(blogPosts);
 ---

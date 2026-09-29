@@ -20,7 +20,7 @@ const { Content } = await render(entry);
 const { title, pubDate, readTime } = entry.data;
 ---
 
-<Layout page_name=`blog post` footer={false}>
+<Layout page_name=`${title}` footer={false}>
   <section class="blog_page">
     <h1>{title}</h1>
     <div class="blog_page-info">

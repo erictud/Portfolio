@@ -1,0 +1,166 @@
+---
+title: 'The stack and the queue in STL'
+description: "Learn everything about how to implement the stack and queue in C++ with the help of STL"
+readTime: 8
+pubDate: 2026-09-29
+---
+import CollapsibleElement from '../../Components/Blog_Components/CollapsibleElement.astro';
+import ComplexityComponent from '../../Components/Blog_Components/ComplexityComponent.astro'
+
+# Stack
+
+## Quick recap - what is the stack
+
+A stack is a data structure that follows the LIFO principle - Last in, First out. In order to implement the structure, 
+we can use a vector for maximum time efficiency or a linked list for maximum space efficiency. The stack has two
+operations: inserting an element on top (it is called the **push operation**) and deleting the last element that was inserted (called
+ the **pop** operation).
+
+![A visual representation of the stack with its operation](../../../public/blog_photos/STL_stack_queue/photo1.png)
+
+<ComplexityComponent 
+  title="Time complexity for common operations"
+  operations={[
+    { name: "Push", complexity: "O(1)" },
+    { name: "Pop", complexity: "O(1)" },
+    { name: "Top", complexity: "O(1)" },
+  ]}
+/>
+
+### Revision - implementing the stack in C
+<CollapsibleElement summary="See code">
+```c
+    typedef struct Stack
+    {
+        int *data;
+        int capacity, top;
+    } Stack;
+
+    // init the structure
+    Stack *initStack(int capacity)
+    {
+        Stack *s = malloc(sizeof(Stack));
+        s->capacity = capacity;
+        s->top = -1;
+        s->data = malloc(s->capacity * sizeof(int));
+        return s;
+    }
+
+    // is empty
+    int isStackEmpty(Stack *s)
+    {
+        return s->top == -1;
+    }
+
+    // push - inserting an element as the last
+    void push(Stack *s, int elem)
+    {
+        if (s->top == s->capacity - 1)
+            return; // not enough space on the stack
+
+        s->top++;
+        s->data[s->top] = elem;
+    }
+
+    // pop - deleting the last element
+    int pop(Stack *s)
+    {
+        if (s->top == -1)  // stack is already empty
+            return -99999; // or other err code
+
+        int val = s->data[s->top];
+        s->top--;
+        return val;
+    }
+```
+</CollapsibleElement>
+
+
+## The stack in STL
+
+In the Standard Template library the stack is implemented as a container adaptor, meaning that under the hood it uses the std::deque container
+and it restricts its interface in order to enforce LIFO. We use the ```<stack>``` header which provides functions such as 
+*push*, *pop*, *top*, *empty* and *size*.
+
+### Declaration & Initialization
+
+In order to initialize the stack at declaration we need to initialize the underlying container which is **std::deque**.
+
+```cpp
+#include <stack>
+#include <deque>
+#include <list>
+
+// stack<type> name_of_stack;
+
+// examples:
+std::stack<int> myStack;
+std::stack<std::pair<int, char>> new_stack;
+std::stack<int, std::list<int>> listStack;
+
+// initialize
+std::stack<char> s(std::deque<char>{'a', 'b', 'c'}); // a is the bottom, c is the top
+```
+
+### Inserting and accessing elements
+
+We can only insert elements at the top using the **push** method, while we can access only the last element using the **top** method.
+
+```cpp
+#include <stack>
+#include <iostream>
+std::stack<int> s;
+
+s.push(40);
+s.push(50);
+s.push(60);
+std::cout << s.top(); // 60
+
+```
+
+### Deleting elements and checking if the stack is empty
+
+The stack only allows to remove the top element using the **pop** function, while checking using the **empty** method if 
+the stack has an element or not.
+
+```cpp
+#include <deque>
+#include <stack>
+#include <iostream>
+
+std::stack<char> s(std::deque<char>{'a', 'b'});
+
+s.pop();
+std::cout << s.top(); // a 
+s.pop();
+if(s.empty())
+    std::cout << "empty"; // true
+
+```
+
+### Traversing and finding size
+
+We can only traverse the stack by deleting element by element or by creating a copy of it where we do the same procedure.
+
+```cpp
+#include <stack>
+#include <deque>
+#include <iostream>
+
+std::stack<int> s(std::deque<int> {1, 2, 3, 4});
+
+cout << s.size() << std::endl; // 4
+
+std::stack<int> temp(s); // making a copy
+
+while(!temp.empty()){
+    std::cout << temp.top() << ' ';
+    temp.pop();
+} // 4 3 2 1
+```
+
+### Other useful methods
+
+    - **stack1.swap(stack2)** - efficiently exchanges the contents of the two stacks
+    - **stack.emplace(element)** - While push() copies or moves an existing object into the stack, emplace() constructs the object in-place directly inside the container
+
