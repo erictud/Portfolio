@@ -8,12 +8,16 @@ import '../styles/blog.css';
 import BlogPreview from '../Components/Blog_Components/BlogPreview.astro';
 
 // fetching posts
-const blogPosts = await getCollection('blog');
-const currentBlogPosts = blogPosts
+const STL_posts = await getCollection('stl');
+const OOP_posts = await getCollection('oop');
+
+const unfilteredBlogPosts = [...STL_posts, ...OOP_posts];
+
+console.log(unfilteredBlogPosts, STL_posts);
+
+const currentBlogPosts = unfilteredBlogPosts
   .filter((blog) => blog.data.archived == false)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-console.log(blogPosts);
 ---
 
 <Layout page_name="Blog">
