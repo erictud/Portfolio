@@ -87,6 +87,11 @@
   margin-bottom: 1.5rem;
 }
 
+.blog_page pre + p,
+.blog_page code + p {
+  margin-top: 1.5rem;
+}
+
 .blog_page ul,
 .blog_page ol {
   margin-top: 0;
@@ -157,7 +162,7 @@
   padding: 1.25rem 1.5rem;
   border-radius: 0.5rem;
   overflow-x: auto;
-  margin: 2rem 0;
+  margin: 0rem 0;
   font-size: 0.9rem;
   line-height: 1.6;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -178,7 +183,7 @@
 .blog_page td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #e5e7eb;
-  text-align: left;
+  text-align: center;
 }
 
 .blog_page th {
