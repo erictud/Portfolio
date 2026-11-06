@@ -1,251 +1,290 @@
 ---
-title: 'The fundamentals of OOP in Java'
-description: "Discover the fundamentals of OOP in Java: architecture of classes, memory management and object relations"
+title: 'The Fundamentals of OOP in Java'
+description: "Discover the fundamentals of OOP in Java: class architecture, memory management, and object relationships"
 readTime: 10
 pubDate: 2026-10-27
 ---
 
-## Creating objects
+## Creating Objects
 
 ### Declaration
 
-Declares a **reference variable** of that class type.
+Declares a **reference variable** of a specific class type:
 ```java
 ClassName objectName;
 ```
 
 ### Instantiation
 
-Using the `new` keyword that allocates memory in the **heap** for a new object.
+Uses the `new` keyword to allocate memory dynamically on the **heap** for the new instance:
 ```java
 objectName = new ClassName();
 ```
 
 ### Initialization
 
-Calls the **constructor** with the right arguments, populating the object's fields' initial values.
-We can initialize with **anonymous objects** (*objects that don't have their reference stored in a different variable*).
+Invokes the **constructor** with the appropriate arguments, populating the object's instance fields with initial state.
+Initialization can also use **anonymous objects** (*objects instantiated without saving their reference to a distinct variable*):
 ```java
-objectName = new ClassName(arg1, arg2, arg3, new ClassName() /* anonymous obj */);
+objectName = new ClassName(arg1, arg2, arg3, new ClassName() /* anonymous object */);
 ```
 
 > **Important**
-> <u>Declaring a variable does not allocate an object in memory.</u> Trying to access its fields will give an error. 
-> For example:
+> Declaring a variable **does not** allocate an object in memory. Attempting to access its instance fields or methods before assignment triggers a **compilation error** (for local variables) or a `NullPointerException` at runtime (for unassigned reference fields).
+>
 > ```java
-> Car BMW;
-> BMW.horse_power = 100; // error
+> Car bmw;
+> bmw.horsepower = 100; // Compilation error: variable bmw might not have been initialized
 > ```
 
-## Using objects
+---
 
-### Accessing fields/methods
+## Using Objects
 
-We can access an object's **fields/methods** using the following syntax:
+### Accessing Fields and Methods
+
+Instance members are accessed using the **dot operator (`.`)**:
 ```java
 objectName.field;
 objectName.method(arg1, arg2);
 ```
 
-In order to prevent *invalid states*, we can use the concept of **encapsulation**. We use different keywords such as `private`/`protected`, making the <u>changing/reading of the value of a field impossible from outside the object</u>. Then we can control the changing of the value using special methods such as **setters** or **getters**.
+To guard against **invalid states**, OOP applies **encapsulation**. By marking fields with access modifiers such as `private` or `protected`, **direct external modification and reading are blocked**. State transitions are mediated safely using accessor and mutator methods (**getters** and **setters**):
 
 ```java
 class Car {
     private int horsepower;
-    // setter:
-    public void setHorsepower(int value){
-        if(value <= 0)
-            return; // we don't change to an invalid value
+
+    // Mutator (setter)
+    public void setHorsepower(int value) {
+        if (value <= 0) {
+            return; // Reject invalid mutations
+        }
         this.horsepower = value;
     }
 }
 ```
 
-## Destroying objects
+---
 
-Java is a **garbage-collected language**, meaning that it *automatically destroys objects* (freeing up memory) once they are <u>no longer referenced by any active part of the program</u>.
+## Destroying Objects
 
-There are two ways references are lost:
-- **natural** - when a reference variable *goes out of scope*
-- **explicitly** - by manually assigning `null` to a reference variable
+Java is a **garbage-collected language**, meaning the runtime automatically reclaims an object's heap memory once that object is **no longer reachable** by any active execution path.
 
-Memory management is done by the **Garbage Collector**, which is the *background process* inside the **Java Virtual Machine** responsible for finding unreferenced objects and freeing their memory.
+References are typically detached in two ways:
+- **Naturally** — when a reference variable **falls out of scope**.
+- **Explicitly** — by deliberately assigning `null` to the reference variable.
 
-> We can *suggest* memory cleanup using the `System.gc()` method. <u>It doesn't necessarily mean that it will clean up memory.</u>
+Memory deallocation is handled by the **Garbage Collector (GC)**, an autonomous daemon process within the **Java Virtual Machine (JVM)** that tracks unreachable objects and releases their allocated memory.
 
-### The `finalize` method
+> Explicit invocation via `System.gc()` merely submits a **suggestion** to the JVM. It provides **no guarantee** that the garbage collector will run immediately or reclaim memory on demand.
 
-Before the garbage collector runs on deleting an object, it will execute the `finalize` method, which is part of the `java.util.Object` superclass (*the base of every object*).
-The role of this function is to **close non-system resources** (*such as network connections, file handles, etc.*). It is not that used because <u>the garbage collector runs unpredictably</u>.
+### The `finalize()` Method
 
-We use this method by **overriding** it in the class, as such:
+Historically, before reclaiming an object's memory, the garbage collector would invoke the `finalize()` method declared in the `java.lang.Object` root class.
+Its original purpose was to release **non-heap system resources** (e.g., file descriptors, sockets). However, `finalize()` has been deprecated because the timing of GC sweeps is **completely non-deterministic**.
 
 ```java
 @Override
-protected void finalize() throws Throwable
+protected void finalize() throws Throwable {
+    // Deprecated cleanup logic
+}
 ```
 
-## How to declare a class
+---
 
-A general structure of a class looks like this:
+## Declaring a Class
+
+The standard structural definition of a Java class follows this syntax:
 
 ```java
 [public] [abstract | final] class ClassName extends SuperClassName 
-implements Interface1/Interface2 
-{
-    // class body - where methods and properties live
+    implements Interface1, Interface2 {
+    // Class body: fields, constructors, methods, and nested classes
 }
 ```
 
-Java requires all **methods**, **member variables**, **constructors**, and **inner classes** to be defined <u>directly inside the class body</u>. It supports **inheritance**, allowing you to define classes that extend the functionalities of other classes. The **derived class** retains all *non-private data and functions* from the **base class**, allowing it to *override existing ones*.
+Java enforces that all **methods**, **instance fields**, **constructors**, and **nested types** reside directly within the enclosing class body. It supports **inheritance**, enabling a **subclass (derived class)** to inherit all *non-private fields and methods* from its **superclass (base class)**, with the option to *override* inherited behaviors.
 
-### Single inheritance
- 
-In Java, a class can <u>only inherit from a single base class</u>, avoiding the **Diamond Problem** (*ambiguity when two parent classes define a method with the exact signature*). However, **polymorphism** can be achieved through **interfaces**.
+### Single Inheritance
 
-### `abstract` classes
+Java enforces **single class inheritance**; a class may extend **only one direct superclass**, which prevents the structural ambiguities of the **Diamond Problem** (*conflicts arising from inheriting duplicate method signatures from multiple parents*). Multiple structural subtyping is supported exclusively via **interfaces**.
 
-It is a *restricted class* defined with the `abstract` keyword that <u>cannot be instantiated directly using the `new` keyword</u>. It is meant to act as a **base template/blueprint** other classes can inherit from, defining *common state and behavior*, while leaving *specific details* to subclasses.
+### `abstract` Classes
 
-It can contain both **abstract methods** (*methods without a body*) and **concrete methods** (*regular methods that can be overridden*).
+An **`abstract` class** is a restricted class that **cannot be directly instantiated** using `new`. It serves as a foundational blueprint that mandates subtyping, defining shared state and behavior while leaving concrete details to its subclasses:
+- Can declare **abstract methods** (*signatures without a method body*), forcing subclasses to supply the implementation.
+- Can contain fully implemented **concrete methods**.
+- Can define **constructors**, which execute through *constructor chaining* when concrete subclasses are instantiated.
 
-> It can have **constructors** that are called via *constructor chaining* (see below).
+### `final` Classes
 
-### `final` classes
+A class declared with the `final` modifier **cannot be extended**. It sits at the opposite extreme of an abstract class (*an abstract class requires extension to be utilized, whereas a final class strictly forbids inheritance*):
+- All methods inside a `final` class are implicitly incapable of being overridden, securing classes such as `java.lang.String` against tampering.
 
-It is a class declared with the `final` keyword that <u>cannot be extended</u>. It is the opposite of an abstract class (*an abstract class must be extended to be useful, while a final class is forbidden from being extended*).
+---
 
-> All methods, implicitly, are `final`, meaning that **they cannot be overridden**.
+## The `Object` Class
 
-## The `Object` class
+`java.lang.Object` is the **root class** of the entire Java type hierarchy. Every Java class implicitly extends `Object` if no explicit superclass is declared, inheriting core methods:
 
-`Object` is the **root class** (*base class*) of the entire Java class hierarchy. 
-When declaring a class, by default it will extend the `Object` class. Every class inherits the core methods from `Object`: `clone()`, `equals()`, `finalize()`, `toString()`.
+* `equals(Object obj)` — by default, compares references using the `==` operator (**memory address identity**, rather than value equality). It must be explicitly overridden to establish semantic **content equality**.
+* `hashCode()` — generates an integer hash for hash-based data structures.
 
-> When concatenating an object with a `String` or passing it into the `println()` function, Java **automatically calls the `toString()` method**.
+> **Best Practice:** Always override `hashCode()` whenever overriding `equals()` to uphold the contract required by collections such as `HashMap` and `HashSet`.
 
-`equals()` by default, in order to compare, uses the `==` operator, which in the case of reference types <u>compares memory addresses, not contents</u>. In order to compare by **contents**, we must override `equals()`.
+* `toString()` — returns a string representation of the object. Java invokes `toString()` automatically when an object reference is concatenated with a `String` or passed to output streams like `System.out.println()`.
+* `clone()` — defined on instances implementing the `Cloneable` interface. By default, it yields a **shallow copy**: primitive fields are copied by **value**, while reference fields copy only the **pointer addresses**, meaning original and cloned instances reference identical nested objects on the heap.
 
-> **Best Practice:** It is a good practice to also override `hashCode()` when you override `equals()` in order to maintain the accuracy of collections such as `HashMap` and `HashSet`.
+---
 
-`clone()` creates a **shallow copy** of the object, meaning that for *primitives* it copies the **values**, while for *reference types* (e.g., arrays, other objects) it copies **just the reference**.
+## Constructors & Default Initialization
 
-## Constructors & Default initialization
+A **constructor** is a dedicated initialization block invoked automatically whenever an instance is created via `new`. Its duty is to establish **valid initial state** by assigning field values before the instance reference is returned.
 
-A **constructor** is a special block of code that is *automatically called* when a new object is created from a class. Its purpose is to **initialize the object's state** by assigning default or special values to its fields before the object can be used.
+Constructor characteristics:
+- Must match the **exact name of the class**.
+- Has **no return type** (not even `void`).
 
-It has the <u>exact same name as the class</u>, has **no return type** (*not even `void`*), and is defined with the keyword `public`.
+If a class defines no constructors explicitly, the Java compiler injects an **implicit default no-argument constructor** that zero-initializes heap-allocated fields:
+- `0` or `0.0` for **primitive numeric types** (`byte`, `short`, `int`, `long`, `float`, `double`)
+- `\u0000` (null character) for the `char` type
+- `false` for `boolean` types
+- `null` for all **reference types**
 
-If there is no constructor defined, the compiler will generate an **automatic one** which initializes the member fields to these values:
-- `0` (`0.0`) for **numeric types** such as `int`, `double`, etc.
-- **null character** (`\u0000`) for the `char` type
-- `null` to **reference variables**
+> **Important:** Declaring **any** explicit parameterized constructor suppresses compiler generation of the default no-argument constructor.
 
-> <u>If we define at least one parameterized constructor, we'll lose the default one.</u>
+Classes can define multiple constructors with unique parameter signatures via **constructor overloading**.
 
-We can also have *multiple constructors* as long as their parameter lists differ in **number** or **type** of arguments. This is called **constructor overloading**.
+> **Variable Scope Note:** Default initialization applies **only to class-level instance and static fields on the heap**. **Local variables** residing on the stack frame receive no default values; reading an uninitialized local variable causes a **compilation error**.
 
-> **Important:** Only **class member variables (fields)** stored on the *heap* get the default values; otherwise, for **local variables** declared in methods which live on the *stack*, they will <u>generate a compile error if we access them before initialization</u>.
+---
 
-## `this` and `super` keywords
+## The `this` and `super` Keywords
 
-Are used for **member access** - they resolve *naming conflicts* (**variable shadowing**) or explicitly refer to members.
+These keywords resolve naming ambiguities and establish explicit parent-child reference links:
 
-For example, `this.field` distinguishes the **class's member variable** from a **constructor/method parameter** with the same name. When there's no name conflict, writing `this.` is *optional*.
+* `this` — refers to the **current instance**. Primarily resolves **variable shadowing** (e.g., when a method parameter shares an identifier with an instance field: `this.horsepower = horsepower`).
+* `super` — refers to the **immediate superclass context**. Used to call overridden base class implementations (e.g., `super.displayInfo()`).
 
-The `super` keyword refers to the **superclass** (*the parent class*) right above it. For example, `super.method()` calls the *superclass version of an overridden method*. Also, `super.field` is not used because it inherits the field, <u>unless the subclass declares a new field with the same name</u>.
+### Constructor Invocations
 
-### Calling constructors using the keywords
+- `this(...)` — calls an alternative constructor within the **same class** (useful for constructor telescoping / delegating to a primary constructor).
+- `super(...)` — explicitly executes a constructor declared within the **immediate superclass**.
 
-- `this(args)` explicitly calls **another constructor within the same class** (*useful for having simpler constructors delegate to the most general one*).
-- `super(args)` explicitly calls a **constructor of the superclass**.
-
-> **Important:** An explicit call to `this(...)` or `super(...)` can **only appear inside a constructor** and <u>must be the very first statement</u> in that constructor. *They can't both be in the same constructor.*
+> **Syntax Rule:** Explicit calls to `this(...)` or `super(...)` can occur **only on the very first line** of a constructor body. Consequently, both invocations cannot be combined in the same constructor.
 
 ### Constructor Chaining
 
-**Constructors are not inherited by subclasses.** Whenever a child class object is created, the <u>parent class constructor is invoked first</u> before the child constructor's body is executed.
-If the first line doesn't call `this(...)` or `super(...)`, the compiler *automatically inserts an implicit call* to the parent's no-argument constructor (`super()`).
+**Constructors are never inherited by derived classes.** Whenever a subclass is instantiated, the **superclass constructor runs first**, ensuring parent state is initialized before child initialization begins.
+If the first line of a child constructor does not contain an explicit call to `this(...)` or `super(...)`, the compiler automatically inserts an invisible, parameterless `super()` invocation.
 
-> Since Java implicitly inserts `super()` in a subclass constructor (*if there isn't a call to another one*), the **subclass will fail to compile** unless there's a *no-param constructor in the parent* or if another call to a constructor is inserted at the start.
+> If a superclass lacks a visible no-argument constructor, any subclass constructor **fails compilation** unless it supplies an explicit, parameterized `super(args)` on line one.
+
+---
 
 ## Access Modifiers
 
-Are **reserved keywords** that control the *visibility* and *accessibility* of classes, fields, constructors, and methods.
+Access modifiers are reserved keywords defining the scope and visibility of classes, methods, and fields:
 
-If there's no modifier written, the default is **package-level**.
+| Modifier | Enclosing Class | Enclosing Package | Subclass (External Package) | Global (*Public Access*) |
+| :--- | :---: | :---: | :---: | :---: |
+| `private` | **Yes** | No | No | No |
+| *Package-Private* (*default / no keyword*) | **Yes** | **Yes** | No | No |
+| `protected` | **Yes** | **Yes** | **Yes** | No |
+| `public` | **Yes** | **Yes** | **Yes** | **Yes** |
 
-| Modifier | Same Class | Same package | Subclass (diff. package) | Anywhere |
-| --- | :---: | :---: | :---: | :---: |
-| `private` | **X** | | | |
-| **package level** (*implicit*) | **X** | **X** | | |
-| `protected`| **X** | **X** | **X** | |
-| `public` | **X** | **X** | **X** | **X** |
+> **Top-level classes** (classes not nested inside another class) can only declare `public` or default (*package-private*) visibility.
 
-> A **top-level class** (*not nested inside another class*) can only be `public` or **implicit** (*package-private*).
+---
 
-## Variable Modifiers
+## Initialization Blocks
 
-Keywords that are declared at the start of the member variables (`[modifiers] Type variableName [= value]`).
-Beyond access modifiers, Java provides these **non-access modifiers** for variables:
-- `final` - creates a **constant** whose value can <u>only be assigned once</u> (*either at declaration or inside the constructor*). Trying to modify it afterward causes a **compilation error**. If we mark a **reference variable**, that means that the *reference cannot be reassigned*, but the *contents can still be edited*.
-- `transient` - used during **object serialization** (*saving an object's state to a byte stream/file*) to mark member variables that <u>should not be saved/serialized</u>. It is used to mark fields with *sensitive data* that shouldn't be written to disk or when a field can be *easily recalculated* based on the others.
-- `volatile` - tells the compiler <u>not to perform certain caching optimizations</u> on the member variable (*In multithreaded programs, threads often cache variables in CPU registers for speed. Marking a field `volatile` guarantees **visibility**: reads and writes go directly to main memory so all threads immediately see the latest value*).
-- `static` - means that the field <u>belongs to the class itself, not to the objects</u>. There's only **one copy shared by all instances** of that class. Combining `static` with `final` is how **global constants** are defined in Java.
+Java supports dedicated structural blocks within the class definition to handle non-constructor initialization:
+
+### Static Initialization Blocks (`static { ... }`)
+
+Target class-level state and run **once**, at the moment the JVM loads and initializes the class into memory:
+- Executed strictly in the **top-to-bottom sequence** in which they appear in the source code.
+- Used to compute static constants or initialize complex class-wide configurations.
+
+### Instance Initialization Blocks (`{ ... }`)
+
+Target instance-level initialization and run **every time a new object is created**:
+- The JVM executes instance blocks **after** the superclass constructor completes, but **before** the matching child constructor body executes.
+- Useful for sharing state-initialization logic across multiple overloaded constructors.
+- Execute sequentially in the order written in the source code.
+
+---
+
+## Field (Variable) Modifiers
+
+Applied to field definitions: `[modifiers] Type variableName [= initialValue];`
+
+* `final` — marks the field as an immutable assignment that can be **written only once** (at declaration or in the constructor). For **reference variables**, immutability applies to the pointer: *the reference cannot point to another object, though the internal fields of the object itself may remain mutable*.
+* `static` — designates a **class variable** belonging to the class type rather than to instances. Only one shared copy exists across all instances, accessed via `ClassName.variableName`. Combining `static final` creates class-level constants.
+* `transient` — informs serialization frameworks that the field **must not be persisted** into byte streams (used for sensitive credentials or cache values reconstructible at runtime).
+* `volatile` — disables thread-local CPU register caching for the variable. All reads and writes hit **main memory directly**, guaranteeing **visibility** of updates across concurrent threads.
+
+---
 
 ## Method Modifiers
 
-A method declaration follows this syntax:
-
+Method declarations follow the general structure:
 ```java
-[modifiers] ReturnType methodName([arguments]) [throws ExceptionType1, ExceptionType2, ...] {
-    // Method body
+[modifiers] ReturnType methodName([parameters]) [throws ExceptionType] {
+    // Body
 }
 ```
- 
-Apart from access modifiers, Java defines the following modifiers:
-- `static` - a **class method** that can be called *directly on the class name* (e.g., `Math.sqrt(val)`) without creating an object. Because it belongs to the class, it <u>cannot use the `this` keyword</u>.
-- `abstract` - a method declared **without a body**; it <u>forces the subclasses to provide the implementation</u>. Can only exist inside an `abstract` class / interface.
-- `final` - <u>prevents the method from being overridden</u> by a subclass.
-- `native` - indicates that the method is implemented in **platform-specific code** (*usually C/C++*) via the *Java Native Interface*.
-- `synchronized` - used in **multithreading** - <u>only one thread can execute that method on the same object at a time</u>.
 
-## Method arguments 
+* `static` — defines a **class method** callable directly using `ClassName.methodName()` without instantiating the class (e.g., `Math.sqrt(...)`). Static methods have no instance context and **cannot reference `this` or `super`**.
+* `abstract` — defines a signature without a body, forcing concrete subclasses to supply an implementation.
+* `final` — prevents derived subclasses from **overriding** the method.
+* `synchronized` — restricts execution to a single thread at a time per monitor lock, managing concurrent access to state.
+* `native` — designates that the routine is implemented externally in platform-dependent native code (C/C++) via the **Java Native Interface (JNI)**.
 
-Parameter names and method signatures must be **distinct from one another** and <u>cannot match the names of any local variables</u> declared inside the method. However, they are allowed to have the *same name as class member variables* (**shadowing**), in which case `this.variableName` is used to refer to the class field.
+---
 
-> In Java, arguments are **pass-by-value**, which means that the JVM *always* creates a <u>bitwise copy of whatever is stored inside the variable</u> and passes that copy into the method parameter.
+## Method Arguments: Pass-by-Value
 
-### The Two Types of "Values" in Memory
+Java parameters cannot duplicate local variable names declared inside the method scope. They can, however, duplicate instance field names, which are disambiguated using `this.fieldName`.
 
-1. **Primitive Variables (`int`, `double`, `boolean`, etc.):**
-   - The variable **directly stores the actual data** (e.g., `int x = 10;` holds the binary representation of `10`).
-   - When passed into a method, Java *copies the literal bits of that number*. Any modification to the parameter <u>only changes the copy, leaving the original variable completely untouched</u>.
+> **Core Principle:** Java is strictly **pass-by-value**. When calling a method, the JVM makes an independent bitwise copy of the argument value and binds it to the method parameter.
 
-2. **Reference Variables (Objects like `String`, `Car`, `StringBuffer`):**
-   - The variable does **not** hold the object itself. The object lives out in the **heap memory**.
-   - The variable only stores a **memory address (a pointer/reference)** telling the program where that object lives.
-   - When passed into a method, Java **copies the value of the address**. Both the caller's variable and the method's parameter variable now hold <u>separate copies of the exact same memory address</u>, pointing to the *exact same object on the heap*.
+### Memory Differences by Type
 
-### The House Address Analogy
+1. **Primitive Types (`int`, `double`, `boolean`, etc.):**
+   - The variable stores the **literal value** directly on the stack.
+   - When passed into a method, the parameter receives a **duplicate copy of the raw bits**. Modifying this parameter leaves the caller's variable untouched.
 
-- **Passing a Primitive:** Like writing down the number `5` on a sticky note and handing a *photocopy* of the note to a friend. If your friend scribbles out the `5` on their copy and writes `99`, <u>your original sticky note still says `5`</u>.
-- **Passing an Object Reference:** Like having a piece of paper with your **home address** written on it. You photocopy that address and hand it to a friend:
-  - **Modifying the content:** If your friend uses that address, travels to your house, and paints the front door yellow, *your front door is now yellow when you go home*. You both share the **same physical house**.
-  - **Reassigning the reference:** If your friend takes their paper, erases your address, and writes down a completely new address (e.g., an apartment across town), <u>your house does not move or change</u>. They only changed where *their* paper points.
+2. **Reference Types (`String`, `Car`, arrays):**
+   - The variable does not store the object itself; it stores a **memory reference (pointer)** pointing to the object located on the **heap**.
+   - When passed into a method, Java copies the **reference value (the memory address)**. Both caller and parameter point to the exact same heap allocation.
 
-## Wrapper classes
+### Analogy: The House Address
 
-In Java, there is a set of classes used to **wrap primitive data types inside an object**:
-- `byte` -> `Byte`
-- `short` -> `Short`
-- `int` -> `Integer`
-- `long` -> `Long`
-- `float` -> `Float`
-- `double` -> `Double`
-- `char` -> `Character`
-- `boolean` -> `Boolean`
+* **Passing a Primitive:** Like copying the number `5` from your notebook onto a sticky note and handing it to a peer. If they cross out `5` and write `99` on their slip, your notebook remains unchanged.
+* **Passing an Object Reference:** Like writing your **house address** on a piece of paper and handing it over:
+  - **Modifying state:** If your peer follows the address to your house and paints your front door green, the door remains green when you return home—you both share the **same physical house**.
+  - **Reassigning the reference:** If your peer erases the address on their paper and writes down a new apartment address, they have merely updated their paper's destination; your original house is unaffected.
 
-> All wrapper classes are **immutable**, meaning that whenever we modify the value of a wrapper object, a <u>brand-new object is created in memory</u>.
+---
 
-They are converted *automatically* from primitive to object and vice versa (**autoboxing** and **unboxing**).
+## Wrapper Classes
+
+Java pairs every primitive data type with a corresponding reference-type **wrapper class** in the `java.lang` package:
+
+| Primitive Type | Wrapper Class |
+| :--- | :--- |
+| `byte` | `Byte` |
+| `short` | `Short` |
+| `int` | `Integer` |
+| `long` | `Long` |
+| `float` | `Float` |
+| `double` | `Double` |
+| `char` | `Character` |
+| `boolean` | `Boolean` |
+
+> **Immutability:** Every wrapper class instance is **immutable**. Mutating a value creates an entirely **new object** on the heap.
+
+Conversions between primitives and their respective wrapper instances are performed automatically by the compiler via **autoboxing** (primitive to object) and **unboxing** (object to primitive).

@@ -1,0 +1,77 @@
+---
+title: 'Aggregation, Composition, and Inheritance'
+description: "Learn more about the core OOP principle - Hierarchy"
+readTime: 5
+pubDate: 2026-11-05
+---
+
+## Hierarchy
+
+This is the **Object-Oriented principle** that organizes code by defining relationships between classes and objects.
+It is split into two types:
+- **Class hierarchies** (*IS-A* relationships) — achieved using **inheritance**.
+- **Object hierarchies** (*HAS-A* / *PART-OF* relationships) — achieved using **aggregation** and **composition**.
+
+---
+
+## Object Hierarchies
+
+Builds a hierarchy of instances, where complex objects are assembled from smaller component objects.
+
+This can be achieved in two ways:
+- **Aggregation (*weak hierarchy*)** — the container object holds a reference to another object, but both have independent lifetimes. The container can exist even if the contained object reference is `null` (e.g., a `University` and its `Student` list).
+- **Composition (*strong hierarchy*)** — the contained object is strictly part of the container and cannot exist independently. When the container object is destroyed, its internal objects are destroyed too (e.g., a `House` and its `Room` instances).
+
+There are three points at which contained objects can be initialized:
+1. **At declaration / definition** (before constructor execution — either with an immediate value or within an instance initialization block)
+2. **In the constructor**
+3. **Before usage** (*lazy initialization / allocation*)
+
+---
+
+## Class Hierarchies
+
+Organizes a hierarchy of classes, where the most general concept sits at the top while the most specialized concept sits at the bottom.
+It practically extends the functionality of a base class (called a *parent class* or *superclass*) using the `extends` keyword, creating a more specialized class (called a *subclass* or *derived class*).
+
+To refine parental behavior, subclasses **override** superclass methods by either completely replacing the implementation or augmenting it via the `super` keyword.
+
+In some class hierarchies, the top class is an **abstract class** or **interface** that mandates every concrete subclass implement specific behaviors, while encapsulating shared state and common routines.
+
+> **Key Rules:**
+> - Overridden methods **must preserve or expand** access modifier visibility (they cannot make access more restrictive).
+> - Java enforces **single inheritance** for classes (`class Sub extends Super` allows only one superclass).
+
+### Class Hierarchies vs. Object Hierarchies
+
+| Feature | Class Hierarchy (*Inheritance*) | Object Hierarchy (*Aggregation / Composition*) |
+| :--- | :--- | :--- |
+| **Relationship Type** | *Is-A* (Specialization) | *Has-A* / *Part-Of* (Containment) |
+| **Java Mechanism** | `class Sub extends Super` | Holding object references as instance fields inside a class |
+| **Binding Time** | **Compile-time** (Static structure fixed in bytecode) | **Runtime** (Dynamically bound at declaration, in constructor, or lazily) |
+| **API Exposure** | Automatically exposes **all** `public` and `protected` methods of the superclass | Exposes **only** the API methods explicitly declared by the container class |
+| **Coupling** | **Tight coupling** (Modifications in the superclass directly propagate to subclasses) | **Loose coupling** (Internal components are typically `private` and encapsulated) |
+
+---
+
+## Polymorphism
+
+An OOP principle that allows a single interface or method identifier to represent different underlying forms (types and class implementations). It enables writing flexible, decoupled code by allowing distinct objects to respond to identical method invocations in their own specialized manners.
+
+There are two primary forms of polymorphism:
+- **Compile-Time Polymorphism (*Method Overloading*)** — occurs within a single class when multiple methods share the **exact same name** but carry **different parameter signatures** (e.g., `Calculator.add(int a, int b)` vs. `Calculator.add(double a, double b)`).
+- **Runtime Polymorphism (*Method Overriding*)** — occurs across a class hierarchy when a subclass redefines an inherited method using the **exact same signature** (e.g., an `Animal` superclass declaring `makeSound()`, overridden independently by `Cat` and `Dog`).
+
+---
+
+## Type - Subtype Relationship
+
+A subclass shares the type of its superclass, inheriting both state (fields) and behavior (methods). This is strictly a **one-way** structural guarantee.
+
+**Casting** between reference types shifts the compiler's view of an object reference either up or down the class hierarchy tree.
+
+| Feature | Upcasting | Downcasting |
+| :--- | :---: | :---: |
+| **Direction in Hierarchy** | Subclass $\rightarrow$ Superclass *(moving up)* | Superclass $\rightarrow$ Subclass *(moving down)* |
+| **Syntax** | **Implicit / Automatic** | **Explicit** (requires cast operator: `(Subclass) obj`) |
+| **Safety** | **Always safe** at compile time and runtime | **Potentially unsafe**; throws `ClassCastException` at runtime if the target instance does not match the cast type |
