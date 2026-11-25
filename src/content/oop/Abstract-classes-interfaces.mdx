@@ -1,0 +1,497 @@
+---
+title: 'Abstract Classes and Interfaces'
+description: "What abstract classes are and how you can implement true polymorphic functions using interfaces"
+readTime: 11
+pubDate: 2026-11-11
+---
+
+import CollapsibleElement from '../../Components/Blog_Components/CollapsibleElement.astro';
+
+## Abstract Classes and Methods
+
+An **abstract class** is a base class in an inheritance hierarchy from which the programmer does not intend to instantiate objects directly. If you try to instantiate an abstract class, it will result in a **compile-time error**. Conversely, classes from which objects can be created are called **concrete classes**.
+
+Abstract classes are declared using the `abstract` keyword.
+
+An **abstract method** is also declared with the `abstract` keyword, specifying only the method's header (*interface/signature*) followed by a semicolon, without any implementation body—the functionality is left to be implemented by the subclass. An abstract method can *only* exist inside an abstract class.
+
+> **Key Rules:**
+>
+> - Any class that contains at least one abstract method **must** itself be declared `abstract`.
+> - An abstract class is **not** required to have abstract methods.
+> - If a subclass inherits from an abstract class, it **must** implement *all* inherited abstract methods in order to be a concrete class.
+
+**Role of abstract classes:** They allow manipulating a set of related classes through a common interface using **dynamic binding** (*deciding which implementation gets executed at runtime*), while reusing common fields and implemented methods across subclasses.
+
+### The Structure of an Abstract Class
+
+An abstract class can (and usually does) have **constructors**, because even though it cannot be instantiated directly, its concrete subclasses must invoke the parent's constructor during initialization using `super(...)`.
+
+An **abstract method** cannot be combined with the following illegal modifiers:
+
+- `private` — private methods aren't inherited, so a subclass can never implement or override them.
+- `static` — static methods belong to the class itself and aren't overridden via dynamic binding.
+- `final` — prevents overriding, which directly contradicts `abstract`.
+
+### Example
+
+We can create an `Animal` abstract class as a base to implement different specific animals.
+
+<CollapsibleElement summary="See code">
+```java
+abstract class Animal {
+    private final String speciesName;
+    protected String tagId;
+
+    public Animal(String tagId, String name) {
+        this.tagId = tagId;
+        this.speciesName = name;
+    }
+
+    public String getSpeciesName() {
+        return speciesName;
+    }
+
+    public void displayTag() {
+        System.out.println(this.tagId);
+    }
+
+    public abstract boolean feed(double amountKg);
+}
+
+class Lion extends Animal {
+    public Lion(String tagId) {
+        super(tagId, "Lion");
+    }
+
+    @Override
+    public boolean feed(double amountKg) {
+        return amountKg > 50;
+    }
+}
+
+class Dolphin extends Animal {
+    public Dolphin(String tagId) {
+        super(tagId, "Dolphin");
+    }
+
+    @Override
+    public boolean feed(double amountKg) {
+        return amountKg > 100;
+    }
+}
+```
+</CollapsibleElement>
+
+## Interfaces
+
+An **interface** is a reference data type that acts as a strict **contract** or **communication protocol** between different parts of a program, completely separating *what* a class can do (the model) from *how* it does it (the implementation).
+
+It accomplishes three main things:
+
+- **Enforces a behavioral contract** — Any concrete class that uses `implements InterfaceName` promises the compiler that it will provide executable code for every abstract method in that interface. If it leaves even one method unimplemented, the class must be declared `abstract`.
+- **Creates a new data type** — Even though you can never instantiate an interface directly, you can use it as the type of a variable, parameter, or return value.
+- **Decouples code** — The calling code is written solely against the interface type, allowing a **pluggable architecture** where underlying implementations can be swapped out as long as the interface contract is respected.
+
+### The Anatomy of an Interface
+
+We declare an interface using the `interface` keyword:
+
+```java
+[public] interface InterfaceName [extends SuperInterface1, ...] { /* body */ }
+```
+
+A class implements one or more interfaces using the `implements` keyword:
+
+```java
+[modifiers] class ClassName [extends SuperClassName] implements Interface1, Interface2 {}
+```
+
+An interface body can hold **constant declarations**, **abstract methods**, and **implemented methods** (of three types).
+
+#### Constants
+
+An interface cannot hold mutable instance variables. Every variable declared inside an interface is implicitly `public`, `static`, and `final`—no other modifiers are allowed.
+
+Every constant must be initialized when declared. However, they can be assigned non-constant expressions that are evaluated and assigned *exactly once* when the interface is initialized.
+
+> **Note:** Initialization order matters! A **compile-time error** occurs if a field's initialization expression references another field declared *later* in the interface.
+
+#### Abstract Methods
+
+Traditionally, the core of an interface is a collection of method declarations that specify *what* behavior is required without providing a method body.
+
+Abstract methods are implicitly `public` in an interface, even if the `public` keyword is omitted. No other access modifiers are allowed in an abstract method's declaration. Any concrete class that implements the interface must provide bodies for all of its abstract methods.
+
+#### Implemented Methods
+
+Since **Java 8** and **Java 9**, interfaces can also contain methods with complete code bodies:
+
+- **`default` methods (Java 8):** Introduced so new methods can be added to interfaces without breaking existing classes that already implement them. Implementing classes automatically inherit `default` methods (declared with the `default` keyword) and can optionally override them.
+- **`static` methods (Java 8):** Not inherited by implementing classes; they must be invoked directly using the interface name (e.g., `InterfaceName.staticMethod()`).
+- **`private` methods (Java 9):** Internal helper methods called by other methods inside the interface, such as `default` methods. They cannot be accessed or overridden by implementing classes.
+
+> **Exception Rule:** If an interface method declares that it might throw a checked exception, the implementing class is allowed to *drop* the exception if its specific implementation never fails. The reverse is strictly forbidden!
+
+## Utility of Interfaces
+
+We can achieve multiple goals using **interfaces**:
+
+- Define similarities between independent classes by ensuring specific contracts are implemented. This allows us to implement different classes in multiple ways while using them in a **unitary manner** (see [the Queue example](#example---using-interfaces)).
+- Define groups of constants.
+- Pass behavior (functions) as parameters.
+
+### Defining Groups of Constants Using Interfaces
+
+We can illustrate this using the following example for defining the months of the year:
+
+```java
+public interface Months {
+    int JAN = 1, FEB = 2, ..., DEC = 12; // implicitly public static final int
+}
+
+// Usage
+if (month < Months.DEC) {
+    // perform operations
+}
+```
+
+*Note:* This approach is now considered outdated; in modern Java, we use an `enum` for proper **type safety**.
+
+### Passing Functions as Parameters
+
+Java traditionally does not allow passing standalone functions as arguments. Instead, interfaces are used to wrap behavior inside an object and pass it to a method—known as the **callback pattern**.
+
+<CollapsibleElement summary="Callback pattern example">
+```java
+interface ShowDateFunction {
+    String execute(int d, int m, int y);
+}
+
+class ShowDateRomanianFormat implements ShowDateFunction {
+    @Override
+    public String execute(int d, int m, int y) {
+        return d + "/" + m + "/" + y;
+    }
+}
+
+class ShowDateAmericanFormat implements ShowDateFunction {
+    @Override
+    public String execute(int d, int m, int y) {
+        return m + "/" + d + "/" + y;
+    }
+}
+
+public class ShowDate {
+    public void showDate(ShowDateFunction f) {
+        System.out.println("The date is: " + f.execute(25, 11, 2026));
+    }
+
+    public static void main(String[] args) {
+        ShowDate app = new ShowDate();
+        ShowDateFunction f1 = new ShowDateAmericanFormat();
+        ShowDateFunction f2 = new ShowDateRomanianFormat();
+        app.showDate(f1);
+        app.showDate(f2);
+    }
+}
+```
+</CollapsibleElement>
+
+## Implementing Multiple Inheritance
+
+In Java, a class can only inherit directly from a *single* base class using the `extends` keyword.
+
+Because the hierarchy of interfaces is completely independent of the hierarchy of the classes that implement them, interfaces allow you to define similarities between unrelated classes and require classes to respect multiple contracts simultaneously.
+
+Extending an abstract class forces a direct hierarchical relationship between classes, whereas implementing an interface only specifies the requirement to provide certain methods. Without interfaces, you could not force a class that already extends a superclass to conform to additional protocols.
+
+Java supports **multiple inheritance** through interfaces at two levels:
+
+### A Class Implementing Multiple Interfaces
+
+```java
+class ClassName extends UniqueSuperClass implements Interface1, Interface2, ...
+```
+
+To be instantiable, `ClassName` must provide implementations for *all* abstract methods from every interface it implements (in addition to any optional member variables and methods of its own).
+
+### An Interface Extending Multiple Super-Interfaces
+
+An interface can itself inherit from several other interfaces using the `extends` keyword:
+
+```java
+interface InterfaceName extends Interface1, Interface2, ...
+```
+
+### Ambiguities in Multiple Inheritance
+
+When a class implements multiple interfaces, naming conflicts can arise between constants or methods declared in both interfaces:
+
+- **Constants:** If two interfaces declare constants with the same name, we qualify them with the interface name (e.g., `I1.x` or `I2.x`).
+- **Methods:** If two interfaces declare methods with the exact same signature, there is no conflict because a single implementation satisfies both. However, if the **return types differ**, it causes a **compile-time error**, because in Java two methods cannot differ solely by their return type.
+
+<h2 id="example---using-interfaces">Example — Using Interfaces</h2>
+
+In this example, we will implement the **queue** data structure (for more information about queues, see <a href="/blog/stl-stack-queue">here</a>) using both a **linked list** and an **array**.
+
+To separate the behavior (*what* it does) from the implementation (*how* it does it), we use an interface. This ensures that the queue exposes the exact same methods regardless of how it is implemented under the hood.
+
+We will create the following `QueueFunctionality` interface that captures how a queue works based on the **FIFO** (*First-In, First-Out*) principle:
+
+```java
+interface QueueFunctionality {
+    void enqueue(int value);
+
+    int dequeue();
+
+    boolean isEmpty();
+
+    static boolean isValidInput(int value) {
+        return value > 0;
+    }
+
+    default void enqueueBatch(int[] values) {
+        for (int val : values) {
+            enqueue(val);
+        }
+    }
+}
+```
+
+Because we also want to share common state (fields) between the implementations, we create an abstract class `BaseQueue`:
+
+```java
+abstract class BaseQueue {
+    protected String typeOfQueue;
+
+    public BaseQueue(String str) {
+        this.typeOfQueue = str;
+    }
+
+    abstract void displayCapacity();
+}
+```
+
+Now we can define both queue implementations, each extending `BaseQueue` and implementing `QueueFunctionality`.
+
+<CollapsibleElement summary="Array implementation">
+```java
+class ArrayQueue extends BaseQueue implements QueueFunctionality {
+    private int[] elements;
+    private int front;
+    private int rear;
+    private int count;
+    private int capacity;
+
+    public ArrayQueue(String queueName, int capacity) {
+        super(queueName); // Subclasses must invoke the parent's constructor
+        this.capacity = capacity;
+        this.elements = new int[capacity];
+        this.front = 0;
+        this.rear = -1;
+        this.count = 0;
+    }
+
+    @Override
+    public void enqueue(int value) {
+        if (!QueueFunctionality.isValidInput(value)) {
+            System.out.println("Rejected: Value must be strictly positive.");
+            return;
+        }
+        if (count == capacity) {
+            System.out.println("Queue is full.");
+            return;
+        }
+        rear = (rear + 1) % capacity;
+        elements[rear] = value;
+        count++;
+    }
+
+    @Override
+    public int dequeue() {
+        if (isEmpty()) return -1;
+        int dequeuedValue = elements[front];
+        front = (front + 1) % capacity;
+        count--;
+        return dequeuedValue;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return count == 0;
+    }
+
+    @Override
+    public void displayCapacity() {
+        System.out.println(typeOfQueue + " (Array) has a max capacity of " + capacity);
+    }
+}
+```
+</CollapsibleElement>
+
+<CollapsibleElement summary="Linked list implementation">
+```java
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+    }
+}
+
+class LinkedListQueue extends BaseQueue implements QueueFunctionality {
+    private Node front;
+    private Node rear;
+
+    public LinkedListQueue(String queueName) {
+        super(queueName);
+        this.front = null;
+        this.rear = null;
+    }
+
+    @Override
+    public void enqueue(int value) {
+        if (!QueueFunctionality.isValidInput(value)) {
+            System.out.println("Rejected: Value must be strictly positive.");
+            return;
+        }
+        Node newNode = new Node(value);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+
+    @Override
+    public int dequeue() {
+        if (isEmpty()) return -1;
+        int dequeuedValue = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null;
+        }
+        return dequeuedValue;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return front == null;
+    }
+
+    @Override
+    public void displayCapacity() {
+        System.out.println(typeOfQueue + " (Linked List) has dynamic capacity.");
+    }
+}
+```
+</CollapsibleElement>
+
+> **Key Takeaways:**
+>
+> - Interfaces separate *what* a class does from *how* it does it, forcing concrete classes to implement all abstract methods.
+> - Typing variables to interfaces creates a **pluggable architecture**, allowing you to swap implementations without breaking client code.
+> - Abstract classes allow reusing common fields and managing related subclasses through **dynamic binding**.
+> - Java restricts a class to extending only one base class directly. However, a class can implement multiple interfaces simultaneously, allowing it to conform to several independent behavioral protocols at once.
+
+## Abstract Classes vs. Interfaces
+
+At a glance, abstract classes and interfaces seem to achieve the same goal: defining a set of behaviors that a class must implement.
+
+In reality, interfaces solve key limitations that abstract classes cannot:
+
+- **Multiple inheritance** — In Java, a class can only extend *one* superclass, whereas it can implement *multiple* interfaces. This is how Java supports multiple inheritance of type.
+- **Hierarchy vs. protocol** — Extending an abstract class enforces a strict parent-child hierarchy, while implementing an interface simply enforces a behavioral protocol across potentially unrelated classes.
+
+In short: **inheritance** models an **"is-a"** relationship, while an **interface** models a **"can-do"** relationship.
+
+## Ambiguities
+
+When implementing multiple interfaces, ambiguities can appear if two interfaces declare variables or methods with the same name. To resolve constant ambiguities, you must explicitly reference them using the interface name (`I1.x` or `I2.x`):
+
+```java
+interface I1 {
+    int x = 1;
+    void method();
+}
+
+interface I2 {
+    int x = 2;
+    void method();    // correct
+    // int method();  // incorrect (conflicting return type)
+}
+
+class C implements I1, I2 {
+    @Override
+    public void method() {
+        System.out.println(I1.x); // correct
+        System.out.println(I2.x); // correct
+        System.out.println(x);    // compile-time error: ambiguous
+    }
+}
+```
+
+## The `Comparable` and `Comparator` Interfaces in Java
+
+Both `Comparable` and `Comparator` are interfaces that define how objects are ordered, and they are used by sorting functions such as `Arrays.sort()` and `Collections.sort()`.
+
+The core difference lies in **where the comparison logic lives**:
+
+- **`Comparable`** — Implemented *inside* the class itself to define its single default (**natural**) order.
+- **`Comparator`** — Implemented *outside* the class (as a separate object) to define one or more **custom** orders.
+
+### `Comparable`
+
+When a class implements `Comparable`, its objects know how to compare themselves to another object of the same type. It contains a single `compareTo` method with the following structure:
+
+```java
+public interface Comparable {
+    public int compareTo(Object o);
+}
+```
+
+`this.compareTo(o)` returns an `int` following this contract:
+
+- `< 0` — `this` is smaller than `o`.
+- `0` — `this` and `o` are equal.
+- `> 0` — `this` is greater than `o`.
+
+`Comparable` is imported automatically because it lives in the `java.lang` package, and its implementation lives directly inside the class being compared.
+
+### `Comparator`
+
+`Comparator` is used when you want to sort objects by a criterion *other* than their natural order. It is also essential when you want to sort objects of a class you do not own and cannot modify.
+
+It is located in `java.util.Comparator` and has the following structure:
+
+```java
+public interface Comparator {
+    public int compare(Object o1, Object o2);
+}
+```
+
+It follows the exact same return-value contract as `compareTo` from the `Comparable` interface.
+
+A `Comparator` can be implemented in two ways: as a **named class** (*useful when you want to reuse the sorting rule in multiple places*) or as an **anonymous inner class** (*useful for a one-off sort without creating a separate class file*):
+
+```java
+// Named class
+class MyComp implements Comparator {
+    @Override
+    public int compare(Object o1, Object o2) {
+        // comparison logic
+    }
+}
+Arrays.sort(p, new MyComp());
+
+// Anonymous inner class
+Arrays.sort(p, new Comparator() {
+    @Override
+    public int compare(Object o1, Object o2) {
+        // comparison logic
+    }
+});
+```

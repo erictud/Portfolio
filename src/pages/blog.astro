@@ -13,8 +13,6 @@ const OOP_posts = await getCollection('oop');
 
 const unfilteredBlogPosts = [...STL_posts, ...OOP_posts];
 
-console.log(unfilteredBlogPosts, STL_posts);
-
 const currentBlogPosts = unfilteredBlogPosts
   .filter((blog) => blog.data.archived == false)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
